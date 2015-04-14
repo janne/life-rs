@@ -1,0 +1,13 @@
+[package]
+
+name = "Life"
+version = "0.0.1"
+authors = ["Jan Andersson <jan.andersson@gmail.com>"]
+
+[[bin]]
+
+name = "life"
+
+[dependencies]
+
+rand = "0.3.7"
