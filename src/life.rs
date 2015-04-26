@@ -26,7 +26,7 @@ impl World {
     fn draw(&self) {
         for row in (0..SIZE) {
             for col in (0..SIZE) {
-                let c = if self.get_at(col, row) { "o" } else { "." };
+                let c = if self.get_at(col, row) { "\x1B[32mo\x1B[0m" } else { "." };
                 print!("{} ", c);
             }
             print!("\n");
