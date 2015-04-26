@@ -76,15 +76,16 @@ impl World {
     }
 }
 
-fn read_line() {
-    let _ = io::stdin().read_line(&mut String::new());
+fn clear_screen() {
+    print!("\x1B[2J\x1B[0;0H");
 }
 
 fn main() {
     let mut world = World::randomize();
     loop {
         world = world.next();
+        clear_screen();
         world.draw();
-        read_line();
+        thread::sleep_ms(250);
     }
 }
