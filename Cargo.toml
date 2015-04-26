@@ -10,4 +10,4 @@ name = "life"
 
 [dependencies]
 
-rand = "0.3.7"
+rand = "*"
