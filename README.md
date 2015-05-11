@@ -1,8 +1,30 @@
 Life in Rust
 ------------
 
-Built with Rust 1.0 beta.
+Add to Cargo.toml:
 
-Test with `cargo run`
+```toml
+[dependencies]
+life = "*"
+```
 
-Press [Return] to go to next generation.
+Use like this:
+
+```rust
+extern crate life;
+use std::thread;
+use life::Life;
+
+fn main() {
+    let mut life = Life::new(60, 30);
+    loop {
+        life.next();
+        print!("\x1B[2J\x1B[0;0H");
+        for row in &life.world {
+            let line = row.iter().map(|&a| if a { "o" } else { "." } ).collect::<Vec<&str>>().concat();
+            println!("{}", line);
+        }
+        thread::sleep_ms(250);
+    }
+}
+```
