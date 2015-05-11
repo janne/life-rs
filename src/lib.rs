@@ -7,7 +7,13 @@ pub struct Life {
 
 impl Life {
     pub fn new(width: usize, height: usize) -> Life {
-        Life { world: vec![vec![false; width as usize]; height as usize] }
+        let mut life = Life { world: vec![vec![false; width]; height] };
+        for row in 0..height {
+            for col in 0..width {
+                if rand::random() { life.set_at(col, row); }
+            }
+        }
+        life
     }
 
     fn width(&self) -> usize {
@@ -16,16 +22,6 @@ impl Life {
 
     fn height(&self) -> usize {
         self.world.len()
-    }
-
-    pub fn randomize(&mut self) {
-        for row in 0..self.height() {
-            for col in 0..self.width() {
-                if rand::random() {
-                    self.set_at(col, row);
-                }
-            }
-        }
     }
 
     pub fn get_at(&self, x: isize, y: isize) -> bool {
@@ -57,7 +53,7 @@ impl Life {
     }
 
     pub fn next(&mut self) {
-        let world = &mut Life::new(self.width(), self.height());
+        let world = &mut Life { world: vec![vec![false; self.width()]; self.height()] };
         for row in (0..self.height()) {
             for col in (0..self.width()) {
                 let count = self.count_at(col, row);
