@@ -1,21 +1,22 @@
 extern crate rand;
 use std::io;
 use std::thread;
-static SIZE:i16 = 30;
+const HEIGHT:i16 = 30;
+const WIDTH:i16 = 60;
 
 struct World {
-    data: [[bool; 30]; 30]
+    data: [[bool; 30]; 60]
 }
 
 impl World {
     fn new() -> World {
-        World { data: [[false; 30]; 30] }
+        World { data: [[false; 30]; 60] }
     }
 
     fn randomize() -> World {
         let mut world = World::new();
-        for row in 0..SIZE {
-            for col in 0..SIZE {
+        for row in 0..HEIGHT {
+            for col in 0..WIDTH {
                 if rand::random() {
                     world.set_at(col,row);
                 }
@@ -25,8 +26,8 @@ impl World {
     }
 
     fn draw(&self) {
-        for row in (0..SIZE) {
-            for col in (0..SIZE) {
+        for row in (0..HEIGHT) {
+            for col in (0..WIDTH) {
                 let c = if self.get_at(col, row) { "\x1B[32mo\x1B[0m" } else { "." };
                 print!("{} ", c);
             }
@@ -36,7 +37,7 @@ impl World {
     }
 
     fn get_at(&self, x: i16, y: i16) -> bool {
-        if y < 0 || x < 0 || y >= SIZE || x >= SIZE {
+        if y < 0 || x < 0 || y >= HEIGHT || x >= WIDTH {
             return false
         }
         self.data[x as usize][y as usize]
@@ -65,8 +66,8 @@ impl World {
 
     fn next(&self) -> World {
         let mut world = World::new();
-        for row in (0..SIZE) {
-            for col in (0..SIZE) {
+        for row in (0..HEIGHT) {
+            for col in (0..WIDTH) {
                 let count = self.count_at(col, row);
                 if count == 3 || (count == 2 && self.get_at(col, row)) {
                     world.set_at(col, row);
