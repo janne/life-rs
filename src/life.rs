@@ -4,12 +4,12 @@ use std::thread;
 static SIZE:i16 = 30;
 
 struct World {
-    data: [bool; 900],
+    data: [[bool; 30]; 30]
 }
 
 impl World {
     fn new() -> World {
-        World { data: [false; 900] }
+        World { data: [[false; 30]; 30] }
     }
 
     fn randomize() -> World {
@@ -39,11 +39,11 @@ impl World {
         if y < 0 || x < 0 || y >= SIZE || x >= SIZE {
             return false
         }
-        self.data[(y*SIZE+x) as usize]
+        self.data[x as usize][y as usize]
     }
 
     fn set_at(&mut self, x: i16, y: i16) {
-        self.data[(y*SIZE+x) as usize] = true;
+        self.data[x as usize][y as usize] = true;
     }
 
     fn count_at(&self, x: i16, y: i16) -> i16 {
