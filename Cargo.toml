@@ -1,13 +1,11 @@
 [package]
-
-name = "Life"
-version = "0.0.1"
+name = "life"
+version = "0.1.0"
 authors = ["Jan Andersson <jan.andersson@gmail.com>"]
 
-[[bin]]
-
+[lib]
 name = "life"
+path = "src/lib.rs"
 
 [dependencies]
-
 rand = "*"
