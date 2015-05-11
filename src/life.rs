@@ -1,15 +1,15 @@
 extern crate rand;
 use std::thread;
 
-struct World {
+struct Life {
     width: i16,
     height: i16,
-    data: Vec<Vec<bool>>,
+    world: Vec<Vec<bool>>,
 }
 
-impl World {
-    fn new(width: i16, height: i16) -> World {
-        World { height: height, width: width, data: vec![vec![false; height as usize]; width as usize] }
+impl Life {
+    fn new(width: i16, height: i16) -> Life {
+        Life { height: height, width: width, world: vec![vec![false; height as usize]; width as usize] }
     }
 
     fn randomize(&mut self) {
@@ -37,11 +37,11 @@ impl World {
         if y < 0 || x < 0 || y >= self.height || x >= self.width {
             return false
         }
-        self.data[x as usize][y as usize]
+        self.world[x as usize][y as usize]
     }
 
     fn set_at(&mut self, x: i16, y: i16) {
-        self.data[x as usize][y as usize] = true;
+        self.world[x as usize][y as usize] = true;
     }
 
     fn count_at(&self, x: i16, y: i16) -> i16 {
@@ -61,8 +61,8 @@ impl World {
         count
     }
 
-    fn next(&self) -> World {
-        let mut world = World::new(self.width, self.height);
+    fn next(&self) -> Life {
+        let mut world = Life::new(self.width, self.height);
         for row in (0..self.height) {
             for col in (0..self.width) {
                 let count = self.count_at(col, row);
@@ -80,7 +80,7 @@ fn clear_screen() {
 }
 
 fn main() {
-    let mut world = World::new(60, 30);
+    let mut world = Life::new(60, 30);
     world.randomize();
     loop {
         world = world.next();
