@@ -1,16 +1,15 @@
 extern crate rand;
-use std::io;
 use std::thread;
 const HEIGHT:i16 = 30;
 const WIDTH:i16 = 60;
 
 struct World {
-    data: [[bool; 30]; 60]
+    data: [[bool; HEIGHT as usize]; WIDTH as usize]
 }
 
 impl World {
     fn new() -> World {
-        World { data: [[false; 30]; 60] }
+        World { data: [[false; HEIGHT as usize]; WIDTH as usize] }
     }
 
     fn randomize() -> World {
