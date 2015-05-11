@@ -1,5 +1,6 @@
 extern crate rand;
 use std::thread;
+use std::mem;
 
 struct Life {
     width: i16,
@@ -50,8 +51,8 @@ impl Life {
         count
     }
 
-    fn next(&self) -> Life {
-        let mut world = Life::new(self.width, self.height);
+    fn next(&mut self) {
+        let world = &mut Life::new(self.width, self.height);
         for row in (0..self.height) {
             for col in (0..self.width) {
                 let count = self.count_at(col, row);
@@ -60,7 +61,7 @@ impl Life {
                 }
             }
         }
-        world
+        mem::swap(self, world);
     }
 }
 
@@ -83,7 +84,7 @@ fn main() {
     let mut world = Life::new(60, 30);
     world.randomize();
     loop {
-        world = world.next();
+        world.next();
         clear_screen();
         draw(&world);
         thread::sleep_ms(250);
