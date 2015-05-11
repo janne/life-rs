@@ -1,32 +1,30 @@
 extern crate rand;
 use std::thread;
-const HEIGHT:i16 = 30;
-const WIDTH:i16 = 60;
 
 struct World {
-    data: [[bool; HEIGHT as usize]; WIDTH as usize]
+    width: i16,
+    height: i16,
+    data: Vec<Vec<bool>>,
 }
 
 impl World {
-    fn new() -> World {
-        World { data: [[false; HEIGHT as usize]; WIDTH as usize] }
+    fn new(width: i16, height: i16) -> World {
+        World { height: height, width: width, data: vec![vec![false; height as usize]; width as usize] }
     }
 
-    fn randomize() -> World {
-        let mut world = World::new();
-        for row in 0..HEIGHT {
-            for col in 0..WIDTH {
+    fn randomize(&mut self) {
+        for row in 0..self.height {
+            for col in 0..self.width {
                 if rand::random() {
-                    world.set_at(col,row);
+                    self.set_at(col, row);
                 }
             }
         }
-        world
     }
 
     fn draw(&self) {
-        for row in (0..HEIGHT) {
-            for col in (0..WIDTH) {
+        for row in (0..self.height) {
+            for col in (0..self.width) {
                 let c = if self.get_at(col, row) { "\x1B[32mo\x1B[0m" } else { "." };
                 print!("{} ", c);
             }
@@ -36,7 +34,7 @@ impl World {
     }
 
     fn get_at(&self, x: i16, y: i16) -> bool {
-        if y < 0 || x < 0 || y >= HEIGHT || x >= WIDTH {
+        if y < 0 || x < 0 || y >= self.height || x >= self.width {
             return false
         }
         self.data[x as usize][y as usize]
@@ -64,9 +62,9 @@ impl World {
     }
 
     fn next(&self) -> World {
-        let mut world = World::new();
-        for row in (0..HEIGHT) {
-            for col in (0..WIDTH) {
+        let mut world = World::new(self.width, self.height);
+        for row in (0..self.height) {
+            for col in (0..self.width) {
                 let count = self.count_at(col, row);
                 if count == 3 || (count == 2 && self.get_at(col, row)) {
                     world.set_at(col, row);
@@ -82,7 +80,8 @@ fn clear_screen() {
 }
 
 fn main() {
-    let mut world = World::randomize();
+    let mut world = World::new(60, 30);
+    world.randomize();
     loop {
         world = world.next();
         clear_screen();
